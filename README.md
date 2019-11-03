@@ -1,6 +1,6 @@
-![TIMEULAR](https://profile.timeular.com/img/svg/timeular.svg)
-
 # TimeularPublicApiBundle
+
+[![Build Status](https://travis-ci.org/tuc0w/TimeularPublicApiBundle.svg?branch=master)](https://travis-ci.org/tuc0w/TimeularPublicApiBundle)
 
 TimeularPublicApiBundle is a way to integrate your time tracking with
 the Timeular ZEI° device into your Symfony application, but with a bit
@@ -78,6 +78,7 @@ $timeular = $container->get('tuc0w_timeular_public_api.client');
 ## Available methods
 
 Currently there are only a few methods available:
+
 | Method                                          | Parameter             | Description                                                |
 | ----------------------------------------------- | --------------------- | ---------------------------------------------------------- |
 | signIn()                                        | *none*                | Uses the api key/secret to generate a token to sign in.    |
