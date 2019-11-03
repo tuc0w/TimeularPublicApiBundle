@@ -1,0 +1,32 @@
+{
+    "name": "tuc0w/timeular-public-api-bundle",
+    "description": "Provides a Timeular integration for your Symfony 4 Project.",
+    "type": "symfony-bundle",
+    "require": {
+        "php": "^7.1.3",
+        "guzzlehttp/guzzle": "^6.4",
+        "symfony/config": "^4.0",
+        "symfony/dependency-injection": "^4.0",
+        "symfony/http-kernel": "^4.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andreas Behrend",
+            "email": "andreasbehrend@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Tuc0w\\TimeularPublicApiBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tuc0w\\TimeularPublicApiBundle\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "^4.3"
+    }
+}
