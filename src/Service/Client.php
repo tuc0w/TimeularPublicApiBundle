@@ -14,6 +14,7 @@ class Client {
      * Configuration variables
      */
     protected $apiBaseUrl;
+    protected $apiHeader;
     protected $apiKey;
     protected $apiSecret;
     protected $apiTimeout;
@@ -62,22 +63,27 @@ class Client {
             ]
         );
 
-        $this->setToken($this->_toArray($response)->token);
+        $this->setHeader($this->_toArray($response)->token);
+    }
+
+
+    public function getActivities() {
+        return $this->get('activities');
+    }
+
+
+    public function getCurrentTracking() {
+        return $this->get('tracking');
+    }
+
+
+    public function getDevices() {
+        return $this->get('devices');
     }
 
 
     public function getTagsAndMentions() {
-        $response = $this->client->request(
-            'GET',
-            "{$this->apiVersion}/tags-and-mentions",
-            [
-                'headers' => [
-                    'Authorization' => "Bearer {$this->getToken()}",        
-                    'Accept'        => 'application/json',
-                ],
-            ]
-        );
-        return $this->_toArray($response);
+        return $this->get('tags-and-mentions');
     }
 
 
@@ -86,17 +92,43 @@ class Client {
         $stoppedAfter  = "{$serializer->normalize($_stoppedAfter)}T00:00:00.000";
         $startedBefore = "{$serializer->normalize($_startedBefore)}T23:59:59.999";
 
-        $response = $this->client->request(
-            'GET',
-            "{$this->apiVersion}/time-entries/{$stoppedAfter}/{$startedBefore}",
-            [
-                'headers' => [
-                    'Authorization' => "Bearer {$this->getToken()}",        
-                    'Accept'        => 'application/json',
-                ],
-            ]
+        return $this->get("time-entries/{$stoppedAfter}/{$startedBefore}");
+    }
+
+    /**
+     * Request methods
+     */
+
+    /**
+     * @param string $_endpoint
+     */
+    private function get($_endpoint) {
+        return $this->_toArray(
+            $this->client->request(
+                'GET',
+                "{$this->apiVersion}/{$_endpoint}",
+                [
+                    'headers' => $this->getHeader(),
+                ]
+            )
         );
-        return $this->_toArray($response);
+    }
+
+    /**
+     * @param string $_endpoint
+     * @param array $_payload
+     */
+    private function post($_endpoint, $_payload) {
+        return $this->_toArray(
+            $this->client->request(
+                'POST',
+                "{$this->apiVersion}/{$_endpoint}",
+                [
+                    'headers' => $this->getHeader(),
+                    'json'    => $_payload
+                ]
+            )
+        );
     }
 
 
@@ -142,13 +174,15 @@ class Client {
     /**
      * @param $_token
      */
-    public function setToken($_token) {
-        $this->token = $_token;
-        return $this;
+    public function setHeader($_token) {
+        $this->apiHeader = [
+            'Authorization' => "Bearer {$_token}",        
+            'Accept'        => 'application/json',
+        ];
     }
 
-    public function getToken() {
-        return $this->token;
+    public function getHeader() {
+        return $this->apiHeader;
     }
 
 }
