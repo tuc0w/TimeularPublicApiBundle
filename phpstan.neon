@@ -1,0 +1,8 @@
+parameters:
+    # Needed only when you use "rules" block below
+    # customRulesetUsed: true
+ 
+    # Sometimes needed
+    autoload_files:
+        - %rootDir%/../../../vendor/autoload.php
+        - %rootDir%/../../../vendor/bin/.phpunit/phpunit-7.4/vendor/autoload.php
