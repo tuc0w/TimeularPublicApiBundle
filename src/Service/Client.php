@@ -29,6 +29,13 @@ class Client {
     }
 
 
+    /**
+     * Converts the given $_response string from JSON to array
+     * 
+     * @param string $_response
+     * 
+     * @return array
+     */
     private function _toArray($_response) {
         return json_decode($_response->getBody()->getContents());
     }
@@ -37,7 +44,7 @@ class Client {
     /**
      * Configures the default GuzzleHttp\Client.
      * 
-     * @return GuzzleHttp\Client
+     * @return GuzzleClient
      */
     private function setupClient() {
         return new GuzzleClient([
@@ -46,7 +53,9 @@ class Client {
         ]);
     }
 
-
+    /**
+     * Retrieves a authentication token during the sign-in process.
+     */
     public function signIn() {
         if (!$this->client) {
             $this->client = $this->setupClient();
@@ -66,27 +75,37 @@ class Client {
         $this->setHeader($this->_toArray($response)->token);
     }
 
-
+    /**
+     * @return array
+     */
     public function getActivities() {
         return $this->get('activities');
     }
 
-
+    /**
+     * @return array
+     */
     public function getCurrentTracking() {
         return $this->get('tracking');
     }
 
-
+    /**
+     * @return array
+     */
     public function getDevices() {
         return $this->get('devices');
     }
 
-
+    /**
+     * @return array
+     */
     public function getTagsAndMentions() {
         return $this->get('tags-and-mentions');
     }
 
-
+    /**
+     * @return array
+     */
     public function getTimeEntries(\DateTimeInterface $_stoppedAfter, \DateTimeInterface $_startedBefore) {
         $serializer    = new Serializer(array(new DateTimeNormalizer('Y-m-d')));
         $stoppedAfter  = "{$serializer->normalize($_stoppedAfter)}T00:00:00.000";
@@ -101,6 +120,8 @@ class Client {
 
     /**
      * @param string $_endpoint
+     * 
+     * @return array
      */
     private function get($_endpoint) {
         return $this->_toArray(
@@ -117,6 +138,8 @@ class Client {
     /**
      * @param string $_endpoint
      * @param array $_payload
+     * 
+     * @return array
      */
     private function post($_endpoint, $_payload) {
         return $this->_toArray(
@@ -181,6 +204,9 @@ class Client {
         ];
     }
 
+    /**
+     * @return string
+     */
     public function getHeader() {
         return $this->apiHeader;
     }

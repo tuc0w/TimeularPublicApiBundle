@@ -7,7 +7,8 @@
         "guzzlehttp/guzzle": "^6.4",
         "symfony/config": "^4.0",
         "symfony/dependency-injection": "^4.0",
-        "symfony/http-kernel": "^4.0"
+        "symfony/http-kernel": "^4.0",
+        "symfony/serializer": "^4.3"
     },
     "license": "MIT",
     "authors": [
@@ -27,6 +28,12 @@
         }
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "^4.3"
+        "symfony/phpunit-bridge": "^4.3",
+        "phpstan/phpstan": "^0.11.19",
+        "phpstan/phpstan-symfony": "^0.11.6",
+        "phpstan/phpstan-phpunit": "^0.11.2",
+        "phpstan/extension-installer": "^1.0",
+        "captainhook/captainhook": "^4.5",
+        "captainhook/plugin-composer": "^4.0"
     }
 }
