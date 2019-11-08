@@ -7,25 +7,28 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-
 /**
- * Bundle Extension
- * 
+ * Bundle Extension.
+ *
  * @package Tuc0w\TimeularPublicApiBundle\DependencyInjection
+ *
  * @author Andreas "tuc0w" Behrend <andreasbehrend@gmail.com>
  */
-class Tuc0wTimeularPublicApiExtension extends Extension {
-
+class Tuc0wTimeularPublicApiExtension extends Extension
+{
     /**
      * {@inheritdoc}
+     *
+     * @throws \Exception
      */
-    public function load(array $configs, ContainerBuilder $container) {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+    public function load(array $configs, ContainerBuilder $container)
+    {
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
 
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
-        
+
         if ($container->hasDefinition('tuc0w_timeular_public_api.client')) {
             $definition = $container->getDefinition('tuc0w_timeular_public_api.client');
 
@@ -53,14 +56,14 @@ class Tuc0wTimeularPublicApiExtension extends Extension {
                 $definition
                     ->addMethodCall('setApiVersion', [$config['timeular']['api_version']]);
             }
-
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAlias() {
+    public function getAlias()
+    {
         return 'tuc0w_timeular_public_api';
     }
 }

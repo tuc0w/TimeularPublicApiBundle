@@ -4,10 +4,7 @@
         "actions": [
             {
                 "action": "\\CaptainHook\\App\\Hook\\Message\\Action\\Beams",
-                "options": {
-                    "subjectLength": 50,
-                    "bodyLineLength": 72
-                },
+                "options": [],
                 "conditions": []
             }
         ]
@@ -16,7 +13,7 @@
         "enabled": true,
         "actions": [
             {
-                "action": "vendor/bin/phpstan analyse src/ tests/ -c phpstan.neon --level 0",
+                "action": "vendor/bin/simple-phpunit --verbose",
                 "options": [],
                 "conditions": []
             }
@@ -26,7 +23,17 @@
         "enabled": true,
         "actions": [
             {
-                "action": "\\CaptainHook\\App\\Hook\\PHP\\Action\\Linting",
+                "action": "vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --verbose",
+                "options": [],
+                "conditions": []
+            },
+            {
+                "action": "vendor/bin/phpstan analyse -c phpstan.neon",
+                "options": [],
+                "conditions": []
+            },
+            {
+                "action": "php ./vendor/phpmd/phpmd/src/bin/phpmd ./ text ruleset.xml --exclude var,vendor",
                 "options": [],
                 "conditions": []
             }
