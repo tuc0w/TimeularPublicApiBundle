@@ -8,7 +8,8 @@
         "symfony/config": "^4.0",
         "symfony/dependency-injection": "^4.0",
         "symfony/http-kernel": "^4.0",
-        "symfony/serializer": "^4.3"
+        "symfony/serializer": "^4.3",
+        "ext-json": "*"
     },
     "license": "MIT",
     "authors": [
@@ -34,6 +35,8 @@
         "phpstan/phpstan-phpunit": "^0.11.2",
         "phpstan/extension-installer": "^1.0",
         "captainhook/captainhook": "^4.5",
-        "captainhook/plugin-composer": "^4.0"
+        "captainhook/plugin-composer": "^4.0",
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "phpmd/phpmd": "^2.7"
     }
 }
