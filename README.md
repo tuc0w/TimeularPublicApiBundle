@@ -47,8 +47,8 @@ use Tuc0w\TimeularPublicApiBundle\Service\Client as TimeularClient;
 class SomeController extends AbstractController {
     private $timeular;
 
-    public function __construct(TimeularClient $_timeular) {
-        $this->timeular = $_timeular;
+    public function __construct(TimeularClient $timeular) {
+        $this->timeular = $timeular;
     }
 
     /**
@@ -85,7 +85,7 @@ Currently there are only a few methods available:
 | getCurrentTracking()                            | *none*                | Returns the time entry that is currently tracked.          |
 | getDevices()                                    | *none*                | Returns a list of registered devices.                      |
 | getTagsAndMentions()                            | *none*                | Returns a list of used tags and mentions.                  |
-| getTimeEntries($_stoppedAfter, $_startedBefore) | DateTimeInterface     | Returns all time entries between the given start/end date. |
+| getTimeEntries($stoppedAfter, $startedBefore) | DateTimeInterface     | Returns all time entries between the given start/end date. |
 | signIn()                                        | *none*                | Uses the api key/secret to generate a token to sign in.    |
 
 

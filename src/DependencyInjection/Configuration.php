@@ -5,19 +5,20 @@ namespace Tuc0w\TimeularPublicApiBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-
 /**
- * Bundle Configuration
- * 
+ * Bundle Configuration.
+ *
  * @package Tuc0w\TimeularPublicApiBundle\DependencyInjection
+ *
  * @author Andreas "tuc0w" Behrend <andreasbehrend@gmail.com>
  */
-class Configuration implements ConfigurationInterface {
-
+class Configuration implements ConfigurationInterface
+{
     /**
      * {@inheritdoc}
      */
-    public function getConfigTreeBuilder() {
+    public function getConfigTreeBuilder()
+    {
         $treeBuilder = new TreeBuilder('tuc0w_timeular_public_api');
         $rootNode = $treeBuilder->getRootNode();
         $rootNode
@@ -43,7 +44,7 @@ class Configuration implements ConfigurationInterface {
                 ->end()
             ->end()
         ;
+
         return $treeBuilder;
     }
-
 }
