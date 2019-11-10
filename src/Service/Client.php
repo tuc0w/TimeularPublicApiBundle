@@ -3,7 +3,6 @@
 namespace Tuc0w\TimeularPublicApiBundle\Service;
 
 use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -55,9 +54,7 @@ class Client
     }
 
     /**
-     * Retrieves a authentication token during the sign-in process.
-     *
-     * @throws GuzzleException
+     * Retrieves an authentication token during the sign-in process.
      */
     public function signIn()
     {
@@ -65,9 +62,8 @@ class Client
             $this->client = $this->setupClient();
         }
 
-        $response = $this->client->request(
-            'POST',
-            "{$this->apiVersion}/developer/sign-in",
+        $response = $this->post(
+            'developer/sign-in',
             [
                 'json' => [
                     'apiKey' => $this->apiKey,
@@ -76,7 +72,7 @@ class Client
             ]
         );
 
-        $this->setHeader($this->_toArray($response)->token);
+        $this->setHeader($response->token);
     }
 
     /**
@@ -126,6 +122,8 @@ class Client
     }
 
     /**
+     * This method is used to do GET requests.
+     *
      * @param string $endpoint
      *
      * @return array
@@ -144,11 +142,12 @@ class Client
     }
 
     /**
-     * This method will be used to do POST requests,
-     * until then we have to suppress the phpmd warning
-     * or remove it, I decided to suppress the warning.
-     *
-     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+     * This method is be used to do POST requests.
+     * The payload should contain something like this:
+     * [
+     *     'headers' => $this->getHeader(),
+     *     'json' => $payload,
+     * ].
      *
      * @param string $endpoint
      * @param array  $payload
@@ -161,19 +160,10 @@ class Client
             $this->client->request(
                 'POST',
                 "{$this->apiVersion}/{$endpoint}",
-                [
-                    'headers' => $this->getHeader(),
-                    'json' => $payload,
-                ]
+                $payload
             )
         );
     }
-
-    /**
-     * Getter & Setter.
-     *
-     * @param mixed $apiBaseUrl
-     */
 
     /**
      * @param $apiBaseUrl
