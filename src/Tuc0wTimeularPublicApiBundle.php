@@ -11,7 +11,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  *
  * @author Andreas "tuc0w" Behrend <andreasbehrend@gmail.com>
  */
-class Tuc0wTimeularPublicApiBundle extends Bundle
-{
+class Tuc0wTimeularPublicApiBundle extends Bundle {
     // no logic needed..
 }

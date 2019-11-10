@@ -12,13 +12,11 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *
  * @author Andreas "tuc0w" Behrend <andreasbehrend@gmail.com>
  */
-class Configuration implements ConfigurationInterface
-{
+class Configuration implements ConfigurationInterface {
     /**
      * {@inheritdoc}
      */
-    public function getConfigTreeBuilder()
-    {
+    public function getConfigTreeBuilder() {
         $treeBuilder = new TreeBuilder('tuc0w_timeular_public_api');
         $rootNode = $treeBuilder->getRootNode();
         $rootNode

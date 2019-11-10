@@ -14,15 +14,13 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * @author Andreas "tuc0w" Behrend <andreasbehrend@gmail.com>
  */
-class Tuc0wTimeularPublicApiExtension extends Extension
-{
+class Tuc0wTimeularPublicApiExtension extends Extension {
     /**
      * {@inheritdoc}
      *
      * @throws \Exception
      */
-    public function load(array $configs, ContainerBuilder $container)
-    {
+    public function load(array $configs, ContainerBuilder $container) {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
 
@@ -62,8 +60,7 @@ class Tuc0wTimeularPublicApiExtension extends Extension
     /**
      * {@inheritdoc}
      */
-    public function getAlias()
-    {
+    public function getAlias() {
         return 'tuc0w_timeular_public_api';
     }
 }

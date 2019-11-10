@@ -10,6 +10,7 @@
             'align_multiline_comment' => true,
             'array_syntax' => ['syntax' => 'short'],
             'blank_line_before_statement' => true,
+            'braces' => ['position_after_functions_and_oop_constructs' => 'same'],
             'concat_space' => ['spacing' => 'one'],
             'combine_consecutive_issets' => true,
             'combine_consecutive_unsets' => true,
