@@ -13,7 +13,7 @@
         "enabled": true,
         "actions": [
             {
-                "action": "vendor/bin/simple-phpunit --verbose",
+                "action": "php ./vendor/bin/simple-phpunit --verbose",
                 "options": [],
                 "conditions": []
             }

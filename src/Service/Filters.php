@@ -12,7 +12,7 @@ class Filters {
     const ENTRY_STRUCTURE = [
         'FILTER_ACTIVITIES' => 'activity',
         'FILTER_MENTIONS' => 'note->mentions',
-        'FILTER_TAGS' => 'note->tags'
+        'FILTER_TAGS' => 'note->tags',
     ];
 
     private $filters = [];
