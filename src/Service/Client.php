@@ -115,7 +115,7 @@ class Client {
         $stoppedAfter = "{$serializer->normalize($stoppedAfter)}T00:00:00.000";
         $startedBefore = "{$serializer->normalize($startedBefore)}T23:59:59.999";
 
-        $timeEntries = $this->get("time-entries/{$stoppedAfter}/{$startedBefore}");
+        $timeEntries = $this->get("time-entries/{$stoppedAfter}/{$startedBefore}")->timeEntries;
         $timeularFilters = new TimeularFilters($this);
 
         return $timeularFilters->applyFilters($filters, $timeEntries);

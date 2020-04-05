@@ -61,18 +61,51 @@ class Filters {
         }
     }
 
-    private function filter($arrayToFilter) {
-        $filteredArray = [];
-        foreach ($arrayToFilter as $entry) {
+    /**
+     * filter.
+     *
+     * @return array
+     */
+    private function filter(array $timeEntries): array {
+        $filteredTimeEntries = [];
+
+        foreach ($timeEntries as $entry) {
             foreach ($this->filters as $filterType => $filterArray) {
                 $structure = self::ENTRY_STRUCTURE[$filterType];
-                foreach ($filterArray as $filter) {
-                    if (is_array($entry[$structure])) {
-                        foreach ($entry[$structure] as $tagOrMention) {
-                            // if (array_key_exists('key', $))
-                            if ($tagOrMention['key'] == $filter) {
-                                if (!array_key_exists($entry->id, $filteredArray)) {
-                                    $filteredArray[$entry->id] = $entry;
+                $properties = explode('->', $structure);
+                $hasProperty = false;
+
+                foreach ($properties as $property) {
+                    if (property_exists($entry, $property)) {
+                        $hasProperty = true;
+                    }
+                }
+
+                if ($hasProperty) {
+                    if (count($properties) > 1) {
+                        $structureObject = $entry;
+                        foreach ($properties as $property) {
+                            $structureObject = $structureObject->$property;
+                        }
+                    } else {
+                        $structureObject = $entry->{$structure};
+                    }
+
+                    foreach ($filterArray as $filter) {
+                        // if we filter by mentions or tags it will be collection of objects
+                        if (is_array($structureObject)) {
+                            foreach ($structureObject as $item) {
+                                if ($item->key == $filter) {
+                                    if (!array_key_exists($entry->id, $filteredTimeEntries)) {
+                                        $filteredTimeEntries[$entry->id] = $entry;
+                                    }
+                                }
+                            }
+                            // if we filter by activities it will only be one object
+                        } else {
+                            if ($structureObject->id == $filter) {
+                                if (!array_key_exists($entry->id, $filteredTimeEntries)) {
+                                    $filteredTimeEntries[$entry->id] = $entry;
                                 }
                             }
                         }
@@ -81,15 +114,17 @@ class Filters {
             }
         }
 
-        return $filteredArray;
+        return $filteredTimeEntries;
     }
 
     /**
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      *
      * @param $filterArray
+     *
+     * @return void
      */
-    private function filterByActivities($filterArray) {
+    private function filterByActivities($filterArray): void {
         /**
          *  {
          *      "activities": [
@@ -108,7 +143,8 @@ class Filters {
             'FILTER_ACTIVITIES',
             $filterArray,
             $activities,
-            'id'
+            'id',
+            'name'
         );
     }
 
@@ -116,14 +152,17 @@ class Filters {
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      *
      * @param $filterArray
+     *
+     * @return void
      */
-    private function filterByMentions($filterArray) {
+    private function filterByMentions($filterArray): void {
         $mentions = $this->timeular->getTagsAndMentions()->mentions;
         $this->setFilters(
             'FILTER_MENTIONS',
             $filterArray,
             $mentions,
-            'key'
+            'key',
+            'label'
         );
     }
 
@@ -131,24 +170,32 @@ class Filters {
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      *
      * @param $filterArray
+     *
+     * @return void
      */
-    private function filterByTags($filterArray) {
+    private function filterByTags($filterArray): void {
         $tags = $this->timeular->getTagsAndMentions()->tags;
         $this->setFilters(
             'FILTER_TAGS',
             $filterArray,
             $tags,
-            'key'
+            'key',
+            'label'
         );
     }
 
-    private function setFilters(string $type, array $filterArray, array $filterSource, string $sourceKey) {
+    /**
+     * setFilters.
+     *
+     * @return void
+     */
+    private function setFilters(string $type, array $filterArray, array $filterSource, string $sourceKey, string $sourceFilter): void {
         if (!array_key_exists($type, $this->filters)) {
             $this->filters[$type] = [];
         }
 
         foreach ($filterSource as $source) {
-            if (in_array($source->name, $filterArray)) {
+            if (in_array($source->$sourceFilter, $filterArray)) {
                 $this->filters[$type][] = $source->$sourceKey;
             }
         }

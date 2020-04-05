@@ -10,6 +10,7 @@
     </description>
 
     <rule ref="rulesets/codesize.xml">
+        <exclude name="CyclomaticComplexity" />
         <exclude name="ExcessiveMethodLength" />
         <exclude name="ExcessiveParameterList" />
     </rule>
@@ -34,6 +35,12 @@
 
     <rule ref="rulesets/unusedcode.xml">
         <exclude name="UnusedFormalParameter" />
+    </rule>
+
+    <rule ref="rulesets/codesize.xml/CyclomaticComplexity">
+        <properties>
+            <property name="reportLevel" value="30" />
+        </properties>
     </rule>
 
     <rule ref="rulesets/codesize.xml/ExcessiveMethodLength">
