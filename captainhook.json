@@ -23,12 +23,12 @@
         "enabled": true,
         "actions": [
             {
-                "action": "vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --verbose",
+                "action": "php ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --verbose",
                 "options": [],
                 "conditions": []
             },
             {
-                "action": "vendor/bin/phpstan analyse -c phpstan.neon",
+                "action": "php ./vendor/bin/phpstan analyse -c phpstan.neon",
                 "options": [],
                 "conditions": []
             },

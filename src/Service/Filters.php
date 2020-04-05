@@ -9,6 +9,12 @@ class Filters {
     const FILTER_MENTIONS = 'filterByMentions';
     const FILTER_TAGS = 'filterByTags';
 
+    const ENTRY_STRUCTURE = [
+        'FILTER_ACTIVITIES' => 'activity',
+        'FILTER_MENTIONS' => 'note->mentions',
+        'FILTER_TAGS' => 'note->tags'
+    ];
+
     private $filters = [];
 
     private $timeular;
@@ -27,7 +33,7 @@ class Filters {
      * @return mixed
      */
     public function applyFilters($filters, $arrayToFilter) {
-        if (null === $filters) {
+        if ($filters === null) {
             return $arrayToFilter;
         }
 
@@ -56,9 +62,26 @@ class Filters {
     }
 
     private function filter($arrayToFilter) {
-        // filter logic..
+        $filteredArray = [];
+        foreach ($arrayToFilter as $entry) {
+            foreach ($this->filters as $filterType => $filterArray) {
+                $structure = self::ENTRY_STRUCTURE[$filterType];
+                foreach ($filterArray as $filter) {
+                    if (is_array($entry[$structure])) {
+                        foreach ($entry[$structure] as $tagOrMention) {
+                            // if (array_key_exists('key', $))
+                            if ($tagOrMention['key'] == $filter) {
+                                if (!array_key_exists($entry->id, $filteredArray)) {
+                                    $filteredArray[$entry->id] = $entry;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-        return $arrayToFilter;
+        return $filteredArray;
     }
 
     /**
@@ -81,16 +104,12 @@ class Filters {
          *  }.
          */
         $activities = $this->timeular->getActivities()->activities;
-        foreach ($activities as $activity) {
-            if (in_array($activity->name, $filterArray)) {
-                if (array_key_exists('FILTER_ACTIVITIES', $this->filters)) {
-                    $this->filters['FILTER_ACTIVITIES'][] = $activity->id;
-                } else {
-                    $this->filters['FILTER_ACTIVITIES'] = [];
-                    $this->filters['FILTER_ACTIVITIES'][] = $activity->id;
-                }
-            }
-        }
+        $this->setFilters(
+            'FILTER_ACTIVITIES',
+            $filterArray,
+            $activities,
+            'id'
+        );
     }
 
     /**
@@ -99,7 +118,13 @@ class Filters {
      * @param $filterArray
      */
     private function filterByMentions($filterArray) {
-        // filter logic..
+        $mentions = $this->timeular->getTagsAndMentions()->mentions;
+        $this->setFilters(
+            'FILTER_MENTIONS',
+            $filterArray,
+            $mentions,
+            'key'
+        );
     }
 
     /**
@@ -108,6 +133,24 @@ class Filters {
      * @param $filterArray
      */
     private function filterByTags($filterArray) {
-        // filter logic..
+        $tags = $this->timeular->getTagsAndMentions()->tags;
+        $this->setFilters(
+            'FILTER_TAGS',
+            $filterArray,
+            $tags,
+            'key'
+        );
+    }
+
+    private function setFilters(string $type, array $filterArray, array $filterSource, string $sourceKey) {
+        if (!array_key_exists($type, $this->filters)) {
+            $this->filters[$type] = [];
+        }
+
+        foreach ($filterSource as $source) {
+            if (in_array($source->name, $filterArray)) {
+                $this->filters[$type][] = $source->$sourceKey;
+            }
+        }
     }
 }
